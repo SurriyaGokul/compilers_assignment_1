@@ -1,0 +1,43 @@
+// Answers to Compiler Assignment Part 2 - Optimization Analysis
+
+// Question A: Number of arithmetic instructions in optimize_O0.s:
+a. Number of arithmetic instructions in optimize_O0.s: 5
+
+// Explanation:
+// Looking at the -O0 (no optimization) assembly code, the arithmetic operations are:
+// Line 21: addl $2, -4(%rbp)     (x += 2)
+// Line 22: addl $2, -4(%rbp)     (x += 2)
+// Line 23: subl $1, -4(%rbp)     (--x)
+// Line 24: addl $5, -4(%rbp)     (x += 5)
+// Line 25: addl $1, -4(%rbp)     (++x)
+// Total: 5 arithmetic instructions (3 additions, 1 subtraction, 1 increment)
+
+
+// Question B: Number of arithmetic instructions in optimize_O2.s:
+b. Number of arithmetic instructions in optimize_O2.s: 0
+
+// Explanation:
+// With -O2 optimization, the compiler performs constant folding.
+// Instead of performing each arithmetic operation at runtime, it evaluates
+// x = 0 + 2 + 2 - 1 + 5 + 1 = 9 at compile time.
+// The optimized code simply loads the constant 9 directly:
+// Line 9: movl $9, %edx
+// This is a load instruction, not an arithmetic instruction.
+// Therefore, there are 0 arithmetic instructions in the optimized code.
+
+
+// Question C: What single value did the compiler optimize all operations to?
+c. What single value did the compiler optimize all operations to?: 9
+
+// Explanation:
+// The compiler performed constant folding and dead code elimination:
+// Original operations: x = 0; x += 2; x += 2; --x; x += 5; ++x;
+// Calculation: 0 + 2 + 2 - 1 + 5 + 1 = 9
+// 
+// With -O2 optimization, since all values are constants and known at compile time,
+// the compiler calculates the final value (9) and directly uses that constant
+// in the printf call. This is visible in the optimized assembly:
+// movl $9, %edx (moves 9 into the edx register as the second argument to printf)
+//
+// This demonstrates how modern compilers can eliminate entire loops and sequences
+// of operations when they can be evaluated at compile time.
