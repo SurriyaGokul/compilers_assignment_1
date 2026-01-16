@@ -1,6 +1,3 @@
-// Simple tokenizer for a small C-like grammar.
-// Restrictions: no <string.h> helpers except strlen (not used here).
-
 #include <stdio.h>
 
 #define MAX_TOKEN_LEN 1024
@@ -126,7 +123,6 @@ int main(void) {
 			continue;
 		}
 
-		// Anything else is treated as UNKNOWN.
 		char unk[2];
 		unk[0] = (char)ch;
 		unk[1] = '\0';
