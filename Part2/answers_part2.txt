@@ -41,3 +41,25 @@ c. What single value did the compiler optimize all operations to?: 9
 //
 // This demonstrates how modern compilers can eliminate entire loops and sequences
 // of operations when they can be evaluated at compile time.
+
+
+// Question D: Count of assembly instructions related to arithmetic operations
+d. Assembly instructions for arithmetic operations:
+   - optimize_O0.s: 5 instructions
+   - optimize_O2.s: 0 instructions
+
+// Explanation:
+// In optimize_O0.s (no optimization), each arithmetic operation from the source code
+// generates a corresponding assembly instruction:
+// Line 20: addl $2, -4(%rbp)     # x += 2
+// Line 21: addl $2, -4(%rbp)     # x += 2
+// Line 22: subl $1, -4(%rbp)     # --x
+// Line 23: addl $5, -4(%rbp)     # x += 5
+// Line 24: addl $1, -4(%rbp)     # ++x
+// Total: 5 assembly instructions (4 addl, 1 subl)
+//
+// In optimize_O2.s (with optimization), the compiler eliminates all arithmetic
+// instructions through constant folding. The final value (9) is directly loaded:
+// Line 16: movl $9, %edx
+// This is a move instruction, not an arithmetic instruction.
+// Total: 0 arithmetic assembly instructions
